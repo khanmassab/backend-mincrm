@@ -6,9 +6,6 @@ const userController = {
     listUsers: async (req, res) => {
         try {
             const users = await User.find();
-            if (User) {
-                
-            }
 
             res.status(201).send({ users });
         } catch (error) { return new Error(error) }

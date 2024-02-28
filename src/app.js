@@ -1,4 +1,6 @@
 import express from 'express';
+import passport from 'passport';
+import config from './configs/passport.js';
 import router from './routes/index.js';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
@@ -8,9 +10,6 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-// app.get('/', async (req, res) => {
-//     res.send('Hello World with ES6 in Express!');
-// });
 const connectMongoDb = async () => {
     try {
         await mongoose.connect(process.env.DB_LOCAL);
@@ -19,11 +18,13 @@ const connectMongoDb = async () => {
     }
 }
 
+config(passport);
+app.use(passport.initialize());
+
+app.use(bodyParser.json());
 await connectMongoDb();
 
-app.use(bodyParser.json())
-app.use('/api', router)
-
+app.use('/api', router);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
