@@ -8,14 +8,10 @@ const UserModelSchema = new mongoose.Schema({
     password: {type: String, set: v => hashPassword(v), required: true},
 });
 
-// UserModelSchema.plugin(toJson);
-// UserModelSchema.plugin(paginate);
-
 const hashPassword = (password) => {
     const salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(password, salt);
 }
-
 UserModelSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
   return !!user;

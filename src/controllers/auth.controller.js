@@ -20,7 +20,7 @@ const authController = {
         try {
             if (User.compareHash(req.body.email)) {
                 const user = await User.findOne({ 'email': req.body.email });
-                const token = jwt.sign(user.toJSON(), 'nodeAuthSecret');
+                const token = jwt.sign(user.toJSON(), process.env.PASSPORT_SECRET);
                 res.status(200).send({token})
             } else {
                 res.status(401).json({ message: 'Authentication failed' });
