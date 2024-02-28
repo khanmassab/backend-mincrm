@@ -1,15 +1,18 @@
 import express from 'express';
-import passport from 'passport';
-import config from './configs/passport.js';
-import router from './routes/index.js';
-import bodyParser from 'body-parser';
+import cors from 'cors';
 import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import router from './routes/index.js';
+import config from './configs/passport.js';
+import multer from './middlewares/upload.js';
+import passport from 'passport';
 dotenv.config();
 
 const app = express();
 const port = 3000;
 
+app.use(cors({ origin: '*' }));
 const connectMongoDb = async () => {
     try {
         await mongoose.connect(process.env.DB_LOCAL);
@@ -18,10 +21,13 @@ const connectMongoDb = async () => {
     }
 }
 
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(multer); 
+app.use('/uploads', express.static('uploads'));
+
 config(passport);
 app.use(passport.initialize());
-
-app.use(bodyParser.json());
 await connectMongoDb();
 
 app.use('/api', router);

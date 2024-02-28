@@ -1,5 +1,6 @@
 import authRoute from './auth.route.js'; 
 import userRoute from './user.route.js'
+import companyRoute from './company.route.js'
 import express from 'express';
 import passport from 'passport';
 
@@ -15,8 +16,12 @@ const defaultRoutes = [
         path: '/users',
         route: userRoute,
         auth: passport.authenticate('jwt', { session: false })
-    }
-    
+    },
+    {
+        path: '/company',
+        route: companyRoute,
+        auth: passport.authenticate('jwt', { session: false })
+    },
 ];
 
 defaultRoutes.forEach((route) => {

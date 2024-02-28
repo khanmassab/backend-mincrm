@@ -7,19 +7,20 @@ const config = (passport) => {
     const options = {};
     options.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
     options.secretOrKey = process.env.PASSPORT_SECRET;
-    passport.use(new JwtStrategy(options, async function(jwt_payload, done) {
-        const user = await User.findOne({id: jwt_payload.id});
-        if (user) {
-            try{
-                if (user) {
-                    done(null, user);
-                } else {
-                    done(null, false);
+    passport.use(new JwtStrategy(options, function(jwt_payload, done) {
+        const user = User.findOne({ id: jwt_payload.id }).then(() => {
+            if (user) {
+                try {
+                    if (user) {
+                        done(null, user);
+                    } else {
+                        done(null, false);
+                    }
+                } catch (error) {
+                    return done(error, false, { message: 'Error finding user' });
                 }
-            } catch (error) {
-                return done(error, false, { message: 'Error finding user' });
             }
-        }
+        });
     }));
 };
 
