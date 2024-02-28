@@ -9,3 +9,5 @@ const CompanyModelSchema = new mongoose.Schema({
 });
 
 const Company = new mongoose.model('companies', CompanyModelSchema);
+
+export default Company;

@@ -14,7 +14,7 @@ const defaultRoutes = [
     {
         path: '/users',
         route: userRoute,
-        auth: passport.authenticate('local', { session: false })
+        auth: passport.authenticate('jwt', { session: false })
     }
     
 ];
