@@ -4,6 +4,7 @@ import config from './configs/passport.js';
 import router from './routes/index.js';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -18,6 +19,7 @@ const connectMongoDb = async () => {
     }
 }
 
+app.use(cors({origin: '*'}));
 config(passport);
 app.use(passport.initialize());
 
